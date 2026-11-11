@@ -1,3 +1,34 @@
+# Gelly — Omarchy edition
+
+Fork of [Fingel/gelly](https://github.com/Fingel/gelly), based on **v2.0.0**, with native live synchronization with the [Omarchy](https://omarchy.org/) theme. The original project and its GPL-3.0-or-later license are preserved.
+
+## Live Omarchy theme synchronization
+
+Gelly follows the active Omarchy palette automatically, including backgrounds, text, accents, panels, selections, and light/dark mode. Changes are applied while the player is running, without restarting playback or changing widget geometry.
+
+- Reads `$XDG_STATE_HOME/omarchy/current/theme/colors.toml`, defaulting to `~/.local/state/omarchy/current/theme/colors.toml`.
+- Checks the file every **two seconds** and updates the CSS only when valid contents change. Reopening the path also handles theme directory replacements.
+- Requires `background`, `foreground`, and `accent` in `#RRGGBB` format. Optional colors: `lighter_background`, `dark_background`, and `selection`. `mode = "light"` selects light mode; otherwise dark mode is used.
+- If the palette file is absent at launch, the original Gelly appearance is used. If the file later becomes invalid or unreadable, the last valid palette is retained.
+- Uses a native GTK CSS provider; no launcher wrapper or theme-switch hook is required.
+
+### Build this fork on Omarchy / Arch Linux
+
+The upstream installation methods listed below install upstream Gelly, **without this fork's theme integration**. Build this branch to get the Omarchy changes:
+
+```sh
+git clone --branch omarchy https://github.com/Kryst-0/gelly-omarchy.git
+cd gelly-omarchy
+just release
+sudo just install
+```
+
+Install Rust, Cargo, `just`, gettext, and the GTK4, libadwaita, GStreamer, OpenSSL and D-Bus development dependencies first; see the upstream Development section below. Arch includes development headers with its library packages. These instructions target a native installation; Flatpak sandbox access to the host palette is not configured by this fork.
+
+The integration lives in [`src/omarchy_theme.rs`](src/omarchy_theme.rs). The `omarchy` branch contains this edition; the original application documentation follows.
+
+---
+
 <p align="center">
     <img width="150" height="150" src="https://github.com/user-attachments/assets/156e5858-a48e-4ea5-a4e4-6fbcd6644dd7" align="center" /><br />
     <br />

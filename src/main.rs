@@ -19,6 +19,7 @@ mod jellyfin;
 mod library;
 mod library_utils;
 mod models;
+mod omarchy_theme;
 mod reporting;
 mod subsonic;
 mod ui;
@@ -34,7 +35,10 @@ fn main() -> glib::ExitCode {
     i18n::init();
     gio::resources_register_include!("gelly.gresource").expect("Failed to register resources");
     let app = Application::new();
-    app.connect_startup(|_| load_css());
+    app.connect_startup(|_| {
+        load_css();
+        omarchy_theme::start();
+    });
     app.connect_activate(build_ui);
     app.set_accels_for_action("win.refresh-library", &["<Ctrl>r"]);
     app.set_accels_for_action("win.request-library-rescan", &["<Ctrl><Shift>r"]);
